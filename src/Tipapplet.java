@@ -2,6 +2,7 @@ import FileFunctions.*;
 
 import java.awt.*;
 
+import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 
 public class Tipapplet extends JApplet implements Runnable {
@@ -9,7 +10,7 @@ public class Tipapplet extends JApplet implements Runnable {
 	private final static int NUM_CHARS_PER_SEC = 25;
 	private final static int NUM_QUOTES_FROM_SAME_FILE = 3;
 
-	private final static int IMAGE_SLEEP_TIME = 1000;
+	private final static int IMAGE_SLEEP_TIME = 10000;
 	/**
 	 * 
 	 */
@@ -27,33 +28,8 @@ public class Tipapplet extends JApplet implements Runnable {
 	boolean isTextFile = true;
 	int optTipLength = 10000;
 
-	String fileList;// = "bugs.txt,compQuotes.txt,cpp.txt,general.txt";
-	String[] weights;// = { 50, 150, 25, 220 };
-/*
-	public StringBuffer readFile() {
-		StringBuffer strBuff;
-		String line;
-		URL url = null;
-		try {
-			url = Tipapplet.class.getResource(fileToRead);
-		} catch (Exception e) {
-			return null;
-		}
-
-		try {
-			InputStream in = url.openStream();
-			BufferedReader bf = new BufferedReader(new InputStreamReader(in));
-			strBuff = new StringBuffer();
-			while ((line = bf.readLine()) != null) {
-				strBuff.append(line + "\n");
-			}
-			return strBuff;
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}*/
+	String fileList;
+	String[] weights;
 
 	public void start() {
 		runner = new Thread((Runnable) this);
@@ -73,6 +49,7 @@ public class Tipapplet extends JApplet implements Runnable {
 			} else {
 				try {
 					t.sleep(IMAGE_SLEEP_TIME);
+					add(txtArea);
 				} catch (InterruptedException e) {
 				}
 			}
@@ -84,6 +61,8 @@ public class Tipapplet extends JApplet implements Runnable {
 		txtArea = new TextArea("", 5, 100, TextArea.SCROLLBARS_NONE);
 		txtArea.setEditable(false);
 		txtArea.setFont(new Font("TimesRoman", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		add(txtArea);
+		optTipLength = TipLength.CalcTipOptLength(mainFolder);
 	}
 
 	public boolean ReadNewQuote() {
@@ -119,7 +98,7 @@ public class Tipapplet extends JApplet implements Runnable {
 
 			} else {
 				isTextFile = false;
-				image = getImage(getDocumentBase(), fileToRead);
+				image = new ImageIcon(getClass().getResource("FileFunctions/"+fileToRead)).getImage();//getImage(getDocumentBase(), "FileFunctions/"+fileToRead);
 				count = 0;
 			}
 		}
@@ -149,7 +128,7 @@ public class Tipapplet extends JApplet implements Runnable {
 		}
 		g.clearRect(0, 0, g.getClipBounds().width, g.getClipBounds().height);
 		if (isTextFile) {
-			add(txtArea);
+			//add(txtArea);
 			txtArea.setText(quote.toString());
 		} else {
 			remove(txtArea);

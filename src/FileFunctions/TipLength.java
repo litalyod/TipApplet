@@ -1,22 +1,30 @@
 package FileFunctions;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 
 public class TipLength {
 
-	public static int CalcTipOptLength(String[] fileList) {
+	public static int CalcTipOptLength(String mainFolder) {
 
 		StringBuffer tipsBuff = new StringBuffer();
+		String[] file = ReadFile.ReadFileFromPath(mainFolder+"folders.txt").toString().split("\\^");
+		String[] folders = file[0].split(",");
 		
-		for (int i = 0; i < fileList.length; i++) {
-			tipsBuff.append(ReadTipFile(fileList[i]));
-			if (i != fileList.length-1) {
-				tipsBuff.append("^");
+		
+		for (int i = 0; i < folders.length; i++) {
+			String folder = mainFolder+folders[i];
+			String[] files = ReadFile.ReadFileFromPath(folder+"/files.txt").toString().split("\\^")[0].split(",");
+			
+			for (int j = 0; j < files.length; j++) {
+				if (files[j].endsWith(".txt")) {
+					tipsBuff.append(ReadFile.ReadFileContent(folder+"/"+files[j]));
+					// if (i != mainFolder.length-1) {
+						tipsBuff.append("^");
+					//}	
+					
+				}
+				
 			}
+			
 		}
 		
 		String[] tips = tipsBuff.toString().split("\\^");
@@ -24,66 +32,11 @@ public class TipLength {
 		return FindOptTipLength(tips);
 	}
 
-	private static StringBuffer ReadTipFile(String fileName) {
-		StringBuffer strBuff;
-		String line;
-		URL url = null;
-		try {
-			url = TipLength.class.getResource(fileName);
-		} catch (Exception e) {
-			return null;
-		}
-
-		try {
-			InputStream in = url.openStream();
-			BufferedReader bf = new BufferedReader(new InputStreamReader(in));
-			strBuff = new StringBuffer();
-			while ((line = bf.readLine()) != null) {
-				strBuff.append(line + "\n");
-			}
-			return strBuff;
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-	}
-/*	
-	private static StringBuffer ReadTipFile(String fileName) {
-		StringBuffer strBuff;
-		strBuff = new StringBuffer();
-		String line;
-		
-		BufferedReader bf;
-		try {
-			bf = new BufferedReader(new FileReader("C:/quotes/"+fileName));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
-		try {
-			while ((line = bf.readLine()) != null) {
-				strBuff.append(line + "\n");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		try {
-			bf.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		return strBuff;
-
-	}*/
 
 	private static int FindOptTipLength(String[] tips) {
 		int[] sizeTip = new int[tips.length];
 
-		for (int i = 0; i < tips.length; i++) {
+		for (int i = 0; i < tips.length-1; i++) {
 			sizeTip[i] = tips[i].length();
 		}
 
