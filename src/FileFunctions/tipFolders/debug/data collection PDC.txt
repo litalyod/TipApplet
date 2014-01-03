@@ -2,7 +2,7 @@ Look at the saved broker.  The broker is like a memory dump
 ^
 If you were to look at the saved broker, what would you look at? 
 ^
-Look in the tool parameters editor. There’s less data there than the broker, so it’s easier to see things 
+Look in the tool parameters editor. There's less data there than the broker, so it's easier to see things 
 ^
 Looking at the broker, remember that the end result is not always the same as the interim result, and the interim result is sometimes what you need 
 ^

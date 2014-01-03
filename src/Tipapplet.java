@@ -7,10 +7,11 @@ import javax.swing.JApplet;
 
 public class Tipapplet extends JApplet implements Runnable {
 
-	private final static int NUM_CHARS_PER_SEC = 25;
+	private final static int NUM_CHARS_PER_SEC = 13;
 	private final static int NUM_QUOTES_FROM_SAME_FILE = 3;
 
-	private final static int IMAGE_SLEEP_TIME = 10000;
+	private final static int IMAGE_SLEEP_TIME = 40000;
+	
 	/**
 	 * 
 	 */
@@ -40,6 +41,9 @@ public class Tipapplet extends JApplet implements Runnable {
 	public void run() {
 		t = Thread.currentThread();
 		while (t == runner) {
+			if (!ReadNewQuote()) {
+				return;
+			}
 			repaint();
 			if (isTextFile) {
 				try {
@@ -50,6 +54,7 @@ public class Tipapplet extends JApplet implements Runnable {
 				try {
 					t.sleep(IMAGE_SLEEP_TIME);
 					add(txtArea);
+					System.out.println("add textArea");
 				} catch (InterruptedException e) {
 				}
 			}
@@ -112,7 +117,6 @@ public class Tipapplet extends JApplet implements Runnable {
 			}
 
 			quote.append(tip);
-			quote.append(optTipLength);
 			count++;
 		}
 		if (count > NUM_QUOTES_FROM_SAME_FILE) {
@@ -122,16 +126,17 @@ public class Tipapplet extends JApplet implements Runnable {
 	}
 
 	public void paint(Graphics g) {
-
+/*
 		if (!ReadNewQuote()) {
 			return;
-		}
+		}*/
 		g.clearRect(0, 0, g.getClipBounds().width, g.getClipBounds().height);
 		if (isTextFile) {
 			//add(txtArea);
 			txtArea.setText(quote.toString());
 		} else {
 			remove(txtArea);
+			System.out.println("remove textArea");
 			g.drawImage(image,0,0,this);
 
 		}
