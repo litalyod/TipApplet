@@ -1,51 +1,62 @@
 package FileFunctions;
 
+import java.net.URL;
 
 public class TipLength {
 
-	public static int CalcTipOptLength(String mainFolder) {
+	public static int calcTipOptLength(String mainFolder) {
 
 		StringBuffer tipsBuff = new StringBuffer();
-		String[] file = ReadFile.ReadFileFromPath(mainFolder+"folders.txt").toString().split("\\^");
-		String[] folders = file[0].split(",");
-		
-		
+		URL url1 = TipLength.class.getResource(mainFolder + "folders.txt");
+		String[] file = ReadFile.readFileFromPath(url1)
+
+		.toString().split("\\^");
+		// String[] file = ReadFile.readFileFromPath(mainFolder + "folders.txt")
+		// .toString().split("\\^");
+		String[] folders = FindFileParam.findSubArray(file, 0);
+
 		for (int i = 0; i < folders.length; i++) {
-			String folder = mainFolder+folders[i];
-			String[] files = ReadFile.ReadFileFromPath(folder+"/files.txt").toString().split("\\^")[0].split(",");
-			
+			String folder = mainFolder + folders[i];
+			URL url2 = TipLength.class.getResource(folder + "/files.txt");
+			String[] files = FindFileParam.findSubArray(ReadFile
+					.readFileFromPath(url2).toString().split("^"), 0);
+			// String[] files =
+			// FindFileParam.findSubArray(ReadFile.readFileFromPath(folder +
+			// "/files.txt")
+			// .toString().split("^"),0);
+
 			for (int j = 0; j < files.length; j++) {
 				if (files[j].endsWith(".txt")) {
-					tipsBuff.append(ReadFile.ReadFileContent(folder+"/"+files[j]));
-					// if (i != mainFolder.length-1) {
-						tipsBuff.append("^");
-					//}	
-					
+					URL url3 = TipLength.class.getResource(folder + "/"
+							+ files[j]);
+					tipsBuff.append(ReadFile.ReadFileContent(url3));
+					// tipsBuff.append(ReadFile.ReadFileContent(folder + "/"
+					// + files[j]));
+					tipsBuff.append("^");
 				}
-				
+
 			}
-			
+
 		}
-		
+
 		String[] tips = tipsBuff.toString().split("\\^");
-		
-		return FindOptTipLength(tips);
+
+		return findOptTipLength(tips);
 	}
 
-
-	private static int FindOptTipLength(String[] tips) {
+	private static int findOptTipLength(String[] tips) {
 		int[] sizeTip = new int[tips.length];
 
-		for (int i = 0; i < tips.length-1; i++) {
+		for (int i = 0; i < tips.length - 1; i++) {
 			sizeTip[i] = tips[i].length();
 		}
 
 		int numOfWantedTips = (int) Math.round(0.95 * tips.length);
-		BubbleSort(sizeTip);
+		bubbleSort(sizeTip);
 		return sizeTip[numOfWantedTips];
 	}
 
-	private static void BubbleSort(int[] intArray) {
+	private static void bubbleSort(int[] intArray) {
 		int n = intArray.length;
 		int temp = 0;
 

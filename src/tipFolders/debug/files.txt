@@ -1,0 +1,17 @@
+9 indispensable rules.txt,10,Debugging tips - 9 indispensable rules
+^
+bugs.txt,200,Debugging tips - quotes
+^
+data collection PDC.txt,10,Debugging tips - data collection PDC
+^
+data collection.txt,30,Debugging tips - data collection
+^
+efficiency.txt,70,Debugging tips - efficiency
+^
+getting unstuck.txt,10,Debugging tips - getting unstuck
+^
+narrowing down.txt,20,Debugging tips - narrowing down
+^
+reproduction.txt,40,Debugging tips - reproduction
+^
+the game of debugging.txt,30,Debugging tips - the game of debugging

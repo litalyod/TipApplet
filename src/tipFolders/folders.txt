@@ -1,0 +1,17 @@
+communication,25
+^
+debug,100
+^
+design,100
+^
+general,200
+^
+humor,50
+^
+languages,25
+^
+quality,50
+^
+review,25
+^
+testing,25

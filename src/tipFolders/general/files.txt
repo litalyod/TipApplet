@@ -1,0 +1,5 @@
+compQuotes.txt,120,General tips - quotes
+^
+general.txt,110,General tips
+^
+wiki.txt,110,General tips - wiki

@@ -1,0 +1,13 @@
+2011.09.18_code_reviews.png,14,review
+^
+code-review.jpg,14,review
+^
+ensure-quality.jpg,14,review
+^
+GeekPoke-Looks-Behind-The-Scenes-Of-Coders_o_48302.jpg,14,review
+^
+self documenting code.jpg,14,review
+^
+software_dilbert.jpg,14,review
+^
+wtfm_thom_holwerda.jpg,14,review

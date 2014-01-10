@@ -1,0 +1,29 @@
+10-Loose-Coupling-High-Cohesion.png,6,design
+^
+80_20-rule.jpg,6,design
+^
+depinversion.png,6,design
+^
+dilbert-network-monitoring-software.gif,6,design
+^
+Dont-Repeat-Graphic.jpg,6,design
+^
+DontRepeatYourself.jpg,6,design
+^
+dontrepeatyourself_motivator_2.jpg,6,design
+^
+InterfaceSegregation.jpg,6,design
+^
+keep it simple.jpg,6,design
+^
+Keep_It_Simple_Stupid.jpg,6,design
+^
+SingleResponsibility.jpg,6,design
+^
+single_responsiblity_principle.jpg,6,design
+^
+small-is-beautiful-banner.png,6,design
+^
+small-is-beautiful2.jpg,6,design
+^
+softwaredesign problem with.jpg,6,design

@@ -1,0 +1,7 @@
+professionalism.jpg,7,quality
+^
+software-testing-bug-costs.gif,7,quality
+^
+Software_Testing_Checklist.gif,7,quality
+^
+Toyota quality for SW development.txt,100,Quality tips - general 

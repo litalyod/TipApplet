@@ -7,17 +7,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 public class ReadFile {
-	
-	public static StringBuffer ReadFileFromPath (String path) {
-		
+
+	public static StringBuffer readFileFromPath(URL url) {
+
 		StringBuffer strBuff;
 		String line;
-		URL url = null;
-		try {
-			url = TipLength.class.getResource(path);
-		} catch (Exception e) {
-			return null;
-		}
 
 		try {
 			InputStream in = url.openStream();
@@ -34,17 +28,11 @@ public class ReadFile {
 		}
 
 	}
-	
-public static StringBuffer ReadFileContent(String path) {
-		
+
+	public static StringBuffer ReadFileContent(URL url) {
+
 		StringBuffer strBuff;
 		String line;
-		URL url = null;
-		try {
-			url = TipLength.class.getResource(path);
-		} catch (Exception e) {
-			return null;
-		}
 
 		try {
 			InputStream in = url.openStream();

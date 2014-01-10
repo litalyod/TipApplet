@@ -1,0 +1,33 @@
+2009-07-06-viewpoints.png,5,humor
+^
+2009-07-06-viewpoints2.png,5,humor
+^
+agile.dilbert.cartoon.jpg,5,humor
+^
+born-to-be-a-software-engineer.jpg,5,humor
+^
+dark side of software engineering.jpg,5,humor
+^
+dilbert-agile-programming.jpg,5,humor
+^
+InterviewJoke.gif,5,humor
+^
+software engineer.jpg,5,humor
+^
+software engineer2.jpg,5,humor
+^
+software-engineer-funny-logo-7813.jpg,5,humor
+^
+software-engineers-life.jpg,5,humor
+^
+software-engineers-life2.jpg,5,humor
+^
+Software-engineers.jpg,5,humor
+^
+software_developer_1.jpg,5,humor
+^
+software_projects_work.jpg,5,humor
+^
+the fools with the tools make the rules.bmp,5,humor
+^
+WorldwithoutEngineers2.jpg,5,humor

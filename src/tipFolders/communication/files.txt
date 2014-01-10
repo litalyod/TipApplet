@@ -1,0 +1,9 @@
+product development.png,20,communication
+^
+product development2.png,20,communication
+^
+the-reality-of-software-engineering.png,20,communication
+^
+the-reality-of-software-engineering2.png,20,communication
+^
+the-reality-of-software-engineering3.png,20,communication

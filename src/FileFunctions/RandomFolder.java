@@ -1,39 +1,39 @@
 package FileFunctions;
 
-
+import java.net.URL;
 
 public class RandomFolder {
-	
-	public static String CalcRandomFolder(String path){
+
+	public static String calcRandomFolder(URL path) {
 		String[] file;
 		String[] folders;
-		String[] weights;
+		int[] weights;
 
-		file = ReadFile.ReadFileFromPath(path+"folders.txt").toString().split("\\^");
-		folders = file[0].split(",");
-		weights = file[1].split(",");
-		
+		file = ReadFile.readFileFromPath(path).toString().split("\\^");
+
+		folders = FindFileParam.findSubArray(file, 0);
+		weights = FindFileParam.convertStringArrayToIntArray(FindFileParam
+				.findSubArray(file, 1));
+
 		return folders[calcRandomFolderIndex(weights, file[0])];
 
-		
 	}
-	
-	private static int calcRandomFolderIndex(String[] weights, String folderList) {
+
+	private static int calcRandomFolderIndex(int[] weights, String folderList) {
 		int sumWeights = 0;
 		for (int i = 0; i < weights.length; i++) {
-			sumWeights += Integer.parseInt(weights[i]);
+			sumWeights += weights[i];
 		}
 		int randomFolderIndex = 0;
 		int sumSoFar = 0;
 		int randomResult = (int) (sumWeights * Math.random());
 		for (; randomFolderIndex < folderList.length(); randomFolderIndex++) {
-			sumSoFar += Integer.parseInt(weights[randomFolderIndex]);
+			sumSoFar += weights[randomFolderIndex];
 			if (sumSoFar > randomResult) {
 				break;
 			}
 		}
 		return randomFolderIndex;
 	}
-	
-	
+
 }

@@ -1,6 +1,7 @@
 import FileFunctions.*;
 
 import java.awt.*;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JApplet;
@@ -11,12 +12,13 @@ public class Tipapplet extends JApplet implements Runnable {
 	private final static int NUM_QUOTES_FROM_SAME_FILE = 3;
 
 	private final static int IMAGE_SLEEP_TIME = 40000;
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	String fileToRead;
+	String context;
 	String folderToRead;
 	String mainFolder = "tipFolders/";
 	TextArea txtArea;
@@ -29,32 +31,31 @@ public class Tipapplet extends JApplet implements Runnable {
 	boolean isTextFile = true;
 	int optTipLength = 10000;
 
-	String fileList;
-	String[] weights;
+	String[] contexts;
+	String[] files;
+	int[] weights;
 
 	public void start() {
 		runner = new Thread((Runnable) this);
 		runner.start();
 	}
 
-	@SuppressWarnings("static-access")
 	public void run() {
 		t = Thread.currentThread();
 		while (t == runner) {
-			if (!ReadNewQuote()) {
+			if (!readNewQuote()) {
 				return;
 			}
 			repaint();
 			if (isTextFile) {
 				try {
-					t.sleep(1000 * quote.length() / NUM_CHARS_PER_SEC);
+					int timeToSleep = 1000 * quote.length() / NUM_CHARS_PER_SEC;
+					sleep(timeToSleep);
 				} catch (InterruptedException e) {
 				}
 			} else {
 				try {
-					t.sleep(IMAGE_SLEEP_TIME);
-					add(txtArea);
-					System.out.println("add textArea");
+					sleep(IMAGE_SLEEP_TIME);
 				} catch (InterruptedException e) {
 				}
 			}
@@ -67,32 +68,42 @@ public class Tipapplet extends JApplet implements Runnable {
 		txtArea.setEditable(false);
 		txtArea.setFont(new Font("TimesRoman", Font.LAYOUT_LEFT_TO_RIGHT, 16));
 		add(txtArea);
-		optTipLength = TipLength.CalcTipOptLength(mainFolder);
+		// optTipLength = TipLength.calcTipOptLength(mainFolder);
 	}
 
-	public boolean ReadNewQuote() {
+	public boolean readNewQuote() {
 		if (count == 0) {
-			folderToRead = RandomFolder.CalcRandomFolder(mainFolder);
-			folderToRead = mainFolder+folderToRead;
-			StringBuffer strBuff = ReadFile.ReadFileFromPath(folderToRead + "/" + "files.txt");
+			String foldersFileName = mainFolder + "folders.txt";
+			System.out.println("foldersFileName: " + foldersFileName);
+			URL urlFolders = Tipapplet.class.getResource(foldersFileName);
+
+			folderToRead = RandomFolder.calcRandomFolder(urlFolders);
+			folderToRead = mainFolder + folderToRead;
+			URL urlFile = Tipapplet.class.getResource(folderToRead + "/"
+					+ "files.txt");
+			StringBuffer strBuff = ReadFile.readFileFromPath(urlFile);
 			if (strBuff == null) {
 				return false;
 			}
 			String[] fileContent = strBuff.toString().split("\\^");
-			fileList = fileContent[0];
-			weights = fileContent[1].split(",");
-			int randomFileIndex = RandomFile.calcRandomFileIndex(weights,
-					fileList);
-			String[] files = fileList.split(",");
+			files = FindFileParam.findSubArray(fileContent, 0);
+			// fileList = fileContent[0];
+			weights = FindFileParam.convertStringArrayToIntArray(FindFileParam
+					.findSubArray(fileContent, 1));
+			int randomFileIndex = RandomFile
+					.calcRandomFileIndex(weights, files);
+			contexts = FindFileParam.findSubArray(fileContent, 2);
 			fileToRead = files[randomFileIndex];
-			fileToRead = folderToRead+"/"+fileToRead;
+			context = contexts[randomFileIndex];
+			fileToRead = folderToRead + "/" + fileToRead;
 			String prHtml = this.getParameter("fileToRead");
 			if (prHtml != null)
 				fileToRead = new String(prHtml);
 
 			if (fileToRead.endsWith(".txt")) {
 				isTextFile = true;
-				strBuff = ReadFile.ReadFileContent(fileToRead);
+				URL url = Tipapplet.class.getResource(fileToRead);
+				strBuff = ReadFile.ReadFileContent(url);
 				if (strBuff == null) {
 					return false;
 				}
@@ -103,7 +114,9 @@ public class Tipapplet extends JApplet implements Runnable {
 
 			} else {
 				isTextFile = false;
-				image = new ImageIcon(getClass().getResource("FileFunctions/"+fileToRead)).getImage();//getImage(getDocumentBase(), "FileFunctions/"+fileToRead);
+				image = new ImageIcon(getClass().getResource(fileToRead))
+						.getImage();// getImage(getDocumentBase(),
+									// "FileFunctions/"+fileToRead);
 				count = 0;
 			}
 		}
@@ -117,6 +130,7 @@ public class Tipapplet extends JApplet implements Runnable {
 			}
 
 			quote.append(tip);
+			quote.append("\n" + context);
 			count++;
 		}
 		if (count > NUM_QUOTES_FROM_SAME_FILE) {
@@ -126,21 +140,55 @@ public class Tipapplet extends JApplet implements Runnable {
 	}
 
 	public void paint(Graphics g) {
-/*
-		if (!ReadNewQuote()) {
-			return;
-		}*/
+		/*
+		 * if (!ReadNewQuote()) { return; }
+		 */
 		g.clearRect(0, 0, g.getClipBounds().width, g.getClipBounds().height);
 		if (isTextFile) {
-			//add(txtArea);
-			txtArea.setText(quote.toString());
+			// add(txtArea);
+			addArea();
+			String string = quote.toString();
+			txtArea.setText(fixString(string));
 		} else {
-			remove(txtArea);
-			System.out.println("remove textArea");
-			g.drawImage(image,0,0,this);
+			removeArea();
+			drawImage(g);
 
 		}
 
+	}
+
+	private String fixString(String string) {
+		// this is a problem that Word prefers ’ to '
+		return string.replace("’", "'");
+	}
+
+	private void addArea() {
+		System.out.println(System.currentTimeMillis() + " adding textArea");
+		txtArea.setVisible(true);
+		// add(txtArea);
+		System.out.println(System.currentTimeMillis() + " added textArea");
+	}
+
+	private void removeArea() {
+		System.out.println(System.currentTimeMillis() + " removing area");
+		txtArea.setVisible(false);
+		// remove(txtArea);
+		System.out.println(System.currentTimeMillis() + " removed area");
+	}
+
+	private void drawImage(Graphics g) {
+		System.out.println(System.currentTimeMillis() + " draw image");
+		g.drawImage(image, 0, 0, this);
+		System.out.println(System.currentTimeMillis() + " drew image");
+	}
+
+	@SuppressWarnings("static-access")
+	private void sleep(int timeToSleep) throws InterruptedException {
+		System.out.println(System.currentTimeMillis() + " sleeping: "
+				+ timeToSleep);
+		t.sleep(timeToSleep);
+		System.out.println(System.currentTimeMillis() + " slept: "
+				+ timeToSleep);
 	}
 
 }
